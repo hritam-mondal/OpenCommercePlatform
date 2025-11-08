@@ -3,7 +3,7 @@ using OCP.API.Repositories;
 
 namespace OCP.API.Services.Stores;
 
-public class StoresService(IStoreRepository repo, ILogger<StoresService> logger) : IStoresService
+public class StoresService(IStoreRepository repo) : IStoresService
 {
     public Task<int> CreateAsync(CreateStoreDto dto, CancellationToken ct)
     {

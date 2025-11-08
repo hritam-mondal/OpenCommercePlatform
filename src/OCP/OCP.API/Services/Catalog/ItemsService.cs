@@ -3,7 +3,7 @@ using OCP.API.Repositories;
 
 namespace OCP.API.Services.Catalog;
 
-public class ItemsService(IItemRepository repo, ILogger<ItemsService> logger) : IItemsService
+public class ItemsService(IItemRepository repo) : IItemsService
 {
     public Task<int> CreateAsync(CreateItemDto dto, CancellationToken ct)
     {

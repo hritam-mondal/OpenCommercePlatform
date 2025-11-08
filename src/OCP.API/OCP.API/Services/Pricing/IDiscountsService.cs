@@ -1,0 +1,12 @@
+﻿using OCP.API.DTOs;
+
+namespace OCP.API.Services.Pricing;
+
+public interface IDiscountsService
+{
+    Task<int> CreateAsync(CreateDiscountDto dto, CancellationToken ct);
+    Task<bool> UpdateAsync(int id, UpdateDiscountDto dto, CancellationToken ct);
+    Task<bool> DeleteAsync(int id, CancellationToken ct);
+    Task<DiscountDto?> GetByIdAsync(int id, CancellationToken ct);
+    Task<IReadOnlyList<DiscountDto>> GetAllAsync(CancellationToken ct);
+}

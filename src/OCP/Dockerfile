@@ -1,8 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-COPY ["OCP.API/OCP.API.csproj", "OCP.API/"]
-RUN dotnet restore "OCP.API/OCP.API.csproj"
+COPY ["OCP/OCP.API.csproj", "OCP/"]
+RUN dotnet restore "OCP/OCP.API.csproj"
 
 COPY . .
 WORKDIR "/src/OCP.API"

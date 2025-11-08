@@ -436,7 +436,7 @@ CREATE TABLE IF NOT EXISTS meta.status (
 -- ---------------------------------------------------------------------
 -- PL/pgSQL block to dynamically loop through all newly created tables
 -- and set their owner to 'ocp_user' and grant all privileges.
-DO $ $
+DO $$
 DECLARE
     r record;
 
@@ -482,4 +482,4 @@ END
 LOOP
 ;
 
-END $ $;
+END $$;

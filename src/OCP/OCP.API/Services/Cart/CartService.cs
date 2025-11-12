@@ -3,15 +3,6 @@ using OCP.API.Repositories;
 
 namespace OCP.API.Services.Cart;
 
-public interface ICartService
-{
-    Task<CartDto?> GetCartAsync(int userId, CancellationToken ct);
-    Task<int> EnsureCartAsync(int userId, CancellationToken ct);
-    Task<int> AddItemAsync(AddCartItemDto dto, CancellationToken ct);
-    Task<bool> UpdateItemAsync(int cartItemId, UpdateCartItemDto dto, CancellationToken ct);
-    Task<bool> RemoveItemAsync(int cartItemId, CancellationToken ct);
-}
-
 public class CartService(ICartRepository repo) : ICartService
 {
     public Task<CartDto?> GetCartAsync(int userId, CancellationToken ct)

@@ -9,16 +9,19 @@ public static class PasswordHasher
     private const int Iterations = 100_000;
 
     // Returns (hashBytes, saltBytes)
-    public static (byte[] Hash, byte[] Salt) HashPassword(string password)
+    private static (byte[] Hash, byte[] Salt) HashPassword(string password)
     {
         if (string.IsNullOrWhiteSpace(password))
         {
             throw new ArgumentException("Password cannot be empty.", nameof(password));
         }
-
-        var salt = RandomNumberGenerator.GetBytes(SaltSize);
-        using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations, HashAlgorithmName.SHA256);
-        var hash = pbkdf2.GetBytes(KeySize);
+        var salt = RandomNumberGenerator.GetBytes(SaltSize); 
+        var hash = Rfc2898DeriveBytes.Pbkdf2(
+            password,
+            salt,
+            Iterations,
+            HashAlgorithmName.SHA256,
+            KeySize);
         return (hash, salt);
     }
 
@@ -30,10 +33,15 @@ public static class PasswordHasher
     }
 
     // Verify from raw bytes
-    public static bool VerifyPassword(string password, byte[] storedHash, byte[] storedSalt)
+    private static bool VerifyPassword(string password, byte[] storedHash, byte[] storedSalt)
     {
-        using var pbkdf2 = new Rfc2898DeriveBytes(password, storedSalt, Iterations, HashAlgorithmName.SHA256);
-        var computedHash = pbkdf2.GetBytes(KeySize);
+        var computedHash = Rfc2898DeriveBytes.Pbkdf2(
+            password,
+            storedSalt,
+            Iterations,
+            HashAlgorithmName.SHA256,
+            KeySize);
+
         return CryptographicOperations.FixedTimeEquals(computedHash, storedHash);
     }
 

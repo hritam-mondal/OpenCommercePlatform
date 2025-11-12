@@ -13,6 +13,7 @@ using OCP.API.Services.Pricing;
 using OCP.API.Services.Security;
 using OCP.API.Services.Stores;
 using OCP.API.Services.Users;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,30 +22,9 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Host.UseSerilog();
-
+builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "OCP.API", Version = "v1" });
-    var bearerScheme = new OpenApiSecurityScheme
-    {
-        Description = "Please enter JWT prefixed 'Bearer' into field",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-    };
-    options.AddSecurityDefinition("Bearer",
-        new OpenApiSecurityScheme
-        {
-            Description = "Please enter JWT prefixed 'Bearer' into field",
-            Name = "Authorization",
-            In = ParameterLocation.Header,
-            Type = SecuritySchemeType.ApiKey
-        });
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement { { bearerScheme, Array.Empty<string>() } });
-});
 
 // Read connection string from config
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -129,8 +109,8 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseAuthentication();
